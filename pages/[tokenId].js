@@ -26,7 +26,7 @@ export default function NFTView() {
   const [loadingState, setLoadingState] = useState('not-loaded')
   
   useEffect(() => {
-    loadNFT()
+    tokenId && loadNFT()
   }, [ tokenId ])
 
   async function loadNFT() {
@@ -38,19 +38,32 @@ export default function NFTView() {
     const found = data.find(item => item.itemId.toNumber() === parseInt(tokenId))
     
     const getData = async () => {
-      const tokenUri = await tokenContract.tokenURI(tokenId)
+
+      const [tokenUri, owner] = await Promise.all([
+        tokenContract.tokenURI(tokenId),
+        tokenContract.ownerOf(tokenId)
+      ])
+      
       try {
-        return (await axios.get(tokenUri)).data
+        return {
+          owner,
+          ...(await axios.get(tokenUri)).data,
+        }
       } catch(error) {
         return {}
       }
     }
 
-    found && setNft({
-      ...found,
-      price: ethers.utils.formatUnits(found.price.toString(), 'ether'),
+    const nftData = await getData(tokenId);
+
+    console.log(nftData)
+
+    nftData && setNft({
       getData,
       ...await getData(),
+      ...found,
+      inMarket: Boolean(found),
+      price: found ? ethers.utils.formatUnits(found.price.toString(), 'ether') : 0,
     });
 
     setLoadingState('loaded')

@@ -23,6 +23,7 @@ export const Item = ({
   list,
   item: {
     getData,
+    inMarket,
     ...item
   },
   innerRef,
@@ -72,10 +73,11 @@ export const Item = ({
     </div>
   </div>
   <div className="p-4 bg-black">
-    <p className="text-2xl mb-4 font-bold text-white">{data?.price} L1</p>
+    {inMarket && <p className="text-2xl mb-4 font-bold text-white">{data?.price} L1</p>}
+    {!inMarket && <p className="text-2xl mb-4 font-bold text-white">Already bought or not for sale</p>}
     
     <Actions>
-      {buyNft && <button className="bg-green-500 text-white font-bold py-2 px-4 rounded" onClick={() => buyNft(data)}>Accio</button>}
+      {inMarket && buyNft && <button className="bg-green-500 text-white font-bold py-2 px-4 rounded" onClick={() => buyNft(data)}>Accio</button>}
       {onClick && <button className="bg-green-500 text-white font-bold py-2 px-4 rounded" onClick={onClick}>View</button>}
       {show && data.format !== 'cif' && <button className="bg-green-500 text-white font-bold py-2 px-4 rounded" onClick={onTools}>Analysis</button>}
       {show && data.format !== 'cif' && <button className="bg-green-500 text-white font-bold py-2 px-4 rounded" onClick={onVR}>Bioverse</button>}

@@ -1,9 +1,21 @@
 import { useRouter } from 'next/router'
-
+import styled from 'styled-components'
 
 import { Item } from '../components/Item'
 
 import { buyNft } from '../lib/buyNft'
+
+const Grid = styled.div`
+display: grid;
+grid-auto-columns: max-content; //added
+grid-auto-flow: dense; // added
+
+grid-auto-rows: 1fr;
+gap: 30px;
+
+grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+column-gap: 30px; 
+`
 
 export const List = ({
   items,
@@ -15,8 +27,8 @@ export const List = ({
 
   return(
   <div className="flex justify-center">
-    <div className="px-4" style={{ maxWidth: '1600px' }}>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-9 pt-4">
+    <div className="px-4" style={{ maxWidth: '1600px', width: '100%', marginTop: '60px' }}>
+      <Grid>
         {
           items.map((nft, i) =>
           <Item
@@ -29,7 +41,7 @@ export const List = ({
             onVR={() => router.push(`/${nft.itemId}/vrtools`)}
           />)
         }
-      </div>
+      </Grid>
     </div>
   </div>
   )
