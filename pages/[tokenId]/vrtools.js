@@ -56,7 +56,7 @@ export default function NFTView() {
   useEffect(() => {
     el.current && setSize([el.current.offsetWidth, el.current.offsetHeight])
   }, [ nft ])
-  
+
   useEffect(() => {
 
     tokenId && (async () => {
@@ -65,6 +65,8 @@ export default function NFTView() {
       const marketContract = new ethers.Contract(nftmarketaddress, Market.abi, provider)
       const data = await marketContract.fetchMarketItems()
       const found = data.find(item => item.itemId.toNumber() === parseInt(tokenId))
+
+      console.log(found)
 
       const getData = async () => {
         const tokenUri = await tokenContract.tokenURI(tokenId)
@@ -77,12 +79,12 @@ export default function NFTView() {
 
       const nftData = {
         ...found,
-        price: ethers.utils.formatUnits(found.price.toString(), 'ether'),
+        price: found && ethers.utils.formatUnits(found.price.toString(), 'ether'),
         getData,
         ...await getData(),
       }
 
-      found && setNft(nftData);
+      nftData && setNft(nftData);
 
       setFile(nftData.image);
     })()
@@ -92,7 +94,7 @@ export default function NFTView() {
   if (!nft) {
     return ''
   }
-  
+
   return (
   <>
     <Header>
@@ -109,7 +111,7 @@ export default function NFTView() {
       />
       }
     </div>
-    
+
     <Footer>
       {buyNft && <button className="bg-green-500 text-white font-bold py-2 px-4 rounded" onClick={() => buyNft({ nft })}>Accio ({nft.price} L1)</button>}
       <button className="bg-green-500 text-white font-bold py-2 px-4 rounded" onClick={() => router.push(`/${nft.itemId}`)}>View</button>

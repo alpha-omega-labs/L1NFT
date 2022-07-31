@@ -24,7 +24,7 @@ export default function NFTView() {
 
   const [nft, setNft] = useState()
   const [loadingState, setLoadingState] = useState('not-loaded')
-  
+
   useEffect(() => {
     tokenId && loadNFT()
   }, [ tokenId ])
@@ -35,15 +35,15 @@ export default function NFTView() {
     const marketContract = new ethers.Contract(nftmarketaddress, Market.abi, provider)
 
     const data = await marketContract.fetchMarketItems()
-    const found = data.find(item => item.itemId.toNumber() === parseInt(tokenId))
-    
+    const found = data.find(item => item.tokenId.toNumber() === parseInt(tokenId))
+
     const getData = async () => {
 
       const [tokenUri, owner] = await Promise.all([
         tokenContract.tokenURI(tokenId),
         tokenContract.ownerOf(tokenId)
       ])
-      
+
       try {
         return {
           owner,
@@ -55,8 +55,6 @@ export default function NFTView() {
     }
 
     const nftData = await getData(tokenId);
-
-    console.log(nftData)
 
     nftData && setNft({
       getData,
@@ -72,7 +70,7 @@ export default function NFTView() {
   if (!nft) {
     return <></>
   }
-  
+
   return (
     <div className="flex justify-center">
       <div className="px-4" style={{ maxWidth: '800px', flex: 1 }}>
@@ -82,8 +80,8 @@ export default function NFTView() {
             item={nft}
             buyNft={() => buyNft({ nft, onSuccess: () => loadNFT() })}
             //onClick={() => router.push(`/${nft.itemId}`)}
-            onTools={() => router.push(`/${nft.itemId}/tools`)}
-            onVR={() => router.push(`/${nft.itemId}/vrtools`)}
+            onTools={() => router.push(`/${tokenId}/tools`)}
+            onVR={() => router.push(`/${tokenId}/vrtools`)}
           />}
         </div>
       </div>

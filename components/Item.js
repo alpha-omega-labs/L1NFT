@@ -44,7 +44,7 @@ export const Item = ({
     if (!inView || data) {
       return;
     }
-    
+
     (async () => {
 
       const data = await getData();
@@ -60,7 +60,7 @@ export const Item = ({
   }, [ Boolean(inView) ])
 
   const show = data?.size < FILESIZE_LIMIT_ANALYSIS_BUTTON
-  
+
   return(
   <div className="border shadow rounded-xl overflow-hidden" ref={ref} style={{ width: '100%' }}>
   <ContentBox>
@@ -75,7 +75,7 @@ export const Item = ({
   <div className="p-4 bg-black">
     {inMarket && <p className="text-2xl mb-4 font-bold text-white">{data?.price} L1</p>}
     {!inMarket && <p className="text-2xl mb-4 font-bold text-white">Already bought or not for sale</p>}
-    
+
     <Actions>
       {inMarket && buyNft && <button className="bg-green-500 text-white font-bold py-2 px-4 rounded" onClick={() => buyNft(data)}>Accio</button>}
       {onClick && <button className="bg-green-500 text-white font-bold py-2 px-4 rounded" onClick={onClick}>View</button>}

@@ -14,7 +14,7 @@ grid-auto-rows: 1fr;
 gap: 30px;
 
 grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-column-gap: 30px; 
+column-gap: 30px;
 `
 
 export const List = ({
@@ -36,9 +36,9 @@ export const List = ({
             key={i}
             item={nft}
             buyNft={!hideBuy && (() => buyNft({ nft, onSuccess: () => loadItems() }))}
-            onClick={() => router.push(`/${nft.itemId}`)}
-            onTools={() => router.push(`/${nft.itemId}/tools`)}
-            onVR={() => router.push(`/${nft.itemId}/vrtools`)}
+            onClick={() => router.push(`/${nft.tokenId}`)}
+            onTools={() => router.push(`/${nft.tokenId}/tools`)}
+            onVR={() => router.push(`/${nft.tokenId}/vrtools`)}
           />)
         }
       </Grid>
